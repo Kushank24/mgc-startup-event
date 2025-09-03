@@ -480,6 +480,67 @@ document.querySelectorAll('img').forEach(img => {
     });
 });
 
+// Gallery Carousel Functionality
+let currentSlideIndex = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(index) {
+    const track = document.querySelector('.carousel-track');
+    const slideWidth = slides[0].offsetWidth;
+    
+    // Update slide position
+    track.style.transform = `translateX(-${index * slideWidth}px)`;
+    
+    // Update active slide
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[index].classList.add('active');
+    
+    // Update active dot
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[index].classList.add('active');
+    
+    currentSlideIndex = index;
+}
+
+function moveSlide(direction) {
+    const newIndex = currentSlideIndex + direction;
+    
+    if (newIndex >= 0 && newIndex < slides.length) {
+        showSlide(newIndex);
+    } else if (newIndex < 0) {
+        showSlide(slides.length - 1); // Go to last slide
+    } else {
+        showSlide(0); // Go to first slide
+    }
+}
+
+function currentSlide(index) {
+    showSlide(index - 1); // Convert to 0-based index
+}
+
+// Auto-play carousel
+function autoPlayCarousel() {
+    setInterval(() => {
+        moveSlide(1);
+    }, 5000); // Change slide every 5 seconds
+}
+
+// Initialize carousel when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    if (slides.length > 0) {
+        showSlide(0); // Show first slide
+        autoPlayCarousel(); // Start auto-play
+    }
+});
+
+// Handle window resize for responsive carousel
+window.addEventListener('resize', function() {
+    if (slides.length > 0) {
+        showSlide(currentSlideIndex); // Recalculate position
+    }
+});
+
 // Console welcome message
 console.log(`
 🎉 Welcome to त्रिसर्ग (Trisarg) Website!
