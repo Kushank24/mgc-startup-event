@@ -105,7 +105,7 @@ function initScrollAnimations() {
     }, observerOptions);
 
     // Observe elements for animation
-    document.querySelectorAll('.about-card, .gallery-item, .timeline-item, .contact-item, .stat-item').forEach(el => {
+    document.querySelectorAll('.about-card, .timeline-item, .contact-item, .stat-item').forEach(el => {
         el.classList.add('animate-on-scroll');
         observer.observe(el);
     });
@@ -240,103 +240,11 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// Gallery Modal (for future enhancement)
+// Gallery Modal (removed - no longer needed)
 function initGalleryModal() {
-    const galleryItems = document.querySelectorAll('.gallery-item img');
-    
-    galleryItems.forEach(img => {
-        img.addEventListener('click', function() {
-            openImageModal(this.src, this.alt);
-        });
-    });
+    // Gallery functionality removed
 }
 
-function openImageModal(src, alt) {
-    const modal = document.createElement('div');
-    modal.className = 'image-modal';
-    modal.innerHTML = `
-        <div class="modal-backdrop">
-            <div class="modal-content">
-                <img src="${src}" alt="${alt}">
-                <button class="modal-close">&times;</button>
-            </div>
-        </div>
-    `;
-    
-    // Add styles
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    `;
-    
-    const modalContent = modal.querySelector('.modal-content');
-    modalContent.style.cssText = `
-        position: relative;
-        max-width: 90%;
-        max-height: 90%;
-    `;
-    
-    const modalImg = modal.querySelector('img');
-    modalImg.style.cssText = `
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 8px;
-    `;
-    
-    const closeBtn = modal.querySelector('.modal-close');
-    closeBtn.style.cssText = `
-        position: absolute;
-        top: -40px;
-        right: 0;
-        background: none;
-        border: none;
-        color: white;
-        font-size: 30px;
-        cursor: pointer;
-        padding: 5px 10px;
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Animate in
-    setTimeout(() => {
-        modal.style.opacity = '1';
-    }, 10);
-    
-    // Close handlers
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
-    
-    function closeModal() {
-        modal.style.opacity = '0';
-        setTimeout(() => {
-            if (modal.parentNode) {
-                modal.remove();
-            }
-        }, 300);
-    }
-}
 
 // Parallax Effect for Hero Section
 function initParallaxEffect() {
@@ -480,66 +388,6 @@ document.querySelectorAll('img').forEach(img => {
     });
 });
 
-// Gallery Carousel Functionality
-let currentSlideIndex = 0;
-const slides = document.querySelectorAll('.carousel-slide');
-const dots = document.querySelectorAll('.dot');
-
-function showSlide(index) {
-    const track = document.querySelector('.carousel-track');
-    const slideWidth = slides[0].offsetWidth;
-    
-    // Update slide position
-    track.style.transform = `translateX(-${index * slideWidth}px)`;
-    
-    // Update active slide
-    slides.forEach(slide => slide.classList.remove('active'));
-    slides[index].classList.add('active');
-    
-    // Update active dot
-    dots.forEach(dot => dot.classList.remove('active'));
-    dots[index].classList.add('active');
-    
-    currentSlideIndex = index;
-}
-
-function moveSlide(direction) {
-    const newIndex = currentSlideIndex + direction;
-    
-    if (newIndex >= 0 && newIndex < slides.length) {
-        showSlide(newIndex);
-    } else if (newIndex < 0) {
-        showSlide(slides.length - 1); // Go to last slide
-    } else {
-        showSlide(0); // Go to first slide
-    }
-}
-
-function currentSlide(index) {
-    showSlide(index - 1); // Convert to 0-based index
-}
-
-// Auto-play carousel
-function autoPlayCarousel() {
-    setInterval(() => {
-        moveSlide(1);
-    }, 5000); // Change slide every 5 seconds
-}
-
-// Initialize carousel when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    if (slides.length > 0) {
-        showSlide(0); // Show first slide
-        autoPlayCarousel(); // Start auto-play
-    }
-});
-
-// Handle window resize for responsive carousel
-window.addEventListener('resize', function() {
-    if (slides.length > 0) {
-        showSlide(currentSlideIndex); // Recalculate position
-    }
-});
 
 // Console welcome message
 console.log(`
